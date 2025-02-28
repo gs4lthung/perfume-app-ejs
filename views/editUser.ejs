@@ -1,0 +1,46 @@
+<div class="border rounded p-4 shadow-lg mx-auto" style="max-width: 1000px; background: rgba(255, 255, 255, 0.9);">
+    <h2 class="fw-bold text-center mb-3">Update Your Profile</h2>
+
+    <!-- Profile Picture -->
+    <div class="text-center">
+        <img id="avatarPreview"
+            src="<%= user.avatar ? user.avatar : 'https://static.vecteezy.com/system/resources/thumbnails/020/765/399/small_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg' %>"
+            alt="User Avatar" class="rounded-circle shadow mb-3"
+            style="width: 120px; height: 120px; object-fit: cover; border: 3px solid #007bff;">
+    </div>
+
+    <!-- Update Form -->
+    <form action="/users/<%= user._id %>?_method=PUT" method="POST">
+        <input type="hidden" name="_method" value="PUT">
+
+        <div class="d-flex align-items-center mb-3">
+            <label for="name" class="fw-bold me-3" style="width: 30%;">Full Name</label>
+            <input type="text" name="name" id="name" class="form-control" value="<%= user.name %>" required>
+        </div>
+
+        <div class="d-flex align-items-center mb-3">
+            <label for="userName" class="fw-bold me-3" style="width: 30%;">Username</label>
+            <input disabled type="text" class="form-control" value="<%= user.userName %>">
+        </div>
+
+        <div class="d-flex align-items-center mb-3">
+            <label for="avatar" class="fw-bold me-3" style="width: 30%;">Profile Picture</label>
+            <input type="text" name="avatar" id="avatar" class="form-control" onchange="previewImage(this.value)">
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100 fw-bold">
+            <i class="fas fa-save"></i> Save Changes
+        </button>
+    </form>
+
+    <a href="/users" class="btn btn-secondary mt-3 w-100 fw-bold">
+        <i class="fas fa-arrow-left"></i> Back to Profile
+    </a>
+</div>
+
+<!-- JavaScript for Image Preview -->
+<script>
+    function previewImage(url) {
+        document.getElementById('avatarPreview').src = url;
+    };
+</script>
