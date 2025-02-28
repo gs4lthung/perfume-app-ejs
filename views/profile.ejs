@@ -1,0 +1,42 @@
+<div class="container d-flex justify-content-center align-items-center">
+    <div class="card shadow-lg p-4 text-center" style="max-width: 450px; width: 100%;">
+        <div class="card-body">
+            <h2 class="fw-bold text-dark">Full Name</h2>
+            <p class="text-muted fs-5">
+                <%= user.name %>
+            </p>
+
+            <h4 class="fw-bold text-dark">Avatar</h4>
+            <img src="<%= user.avatar ? user.avatar : 'https://static.vecteezy.com/system/resources/thumbnails/020/765/399/small_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg' %>"
+                alt="Avatar" class="img-fluid rounded-circle" style="width: 100px; height: 100px;">
+            </p>
+
+            <h5 class="fw-bold text-dark">Joined On</h5>
+            <p class="text-muted fs-6">
+                <%= user.createdAt.substr(0,10) %>
+            </p>
+
+            <% if (error) { %>
+                <p class="text -danger">
+                    <%= error %>
+                </p>
+                <% } %>
+
+                    <!-- Edit Button -->
+                    <a href="/users/edit" type="button" class="btn btn-outline-info">Edit</a>
+                    <a href="/users/change-password" type="button" class="btn btn-outline-info">Change Password</a>
+                    <!-- Delete Button with Warning -->
+                    <form action="/users/<%= user._id %>?_method=DELETE" method="POST">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <button class="btn btn-danger mt-3 d-flex justify-content-center align-items-center"
+                            onclick="return confirm('Are you sure you want to delete your account?');">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-trash-fill" viewBox="0 0 16 16">
+                                <path
+                                    d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0" />
+                            </svg>Delete
+                        </button>
+                    </form>
+        </div>
+    </div>
+</div>
