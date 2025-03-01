@@ -43,9 +43,8 @@ app.use(session({
   store: new MongoStore({ mongoUrl: 'mongodb://localhost:27017/ssr' })
 }))
 
-// Global user variable
 app.use((req, res, next) => {
-  res.locals.user = req.session.user || null;
+  res.locals.member = req.session.member || null;
   res.locals.perfumes = req.session.perfumes || null
   res.locals.categories = req.session.categories || null
   res.locals.error = req.session.error || null;
@@ -57,7 +56,7 @@ app.use(methodOverride('_method'));
 
 app.use('/', indexRouter);
 app.use('/', authRouter);
-app.use('/users',ensureAuthenticated, require('./routes/users'));
+app.use('/members',ensureAuthenticated, require('./routes/members'));
 app.use('/perfumes', require('./routes/perfumes'));
 
 // catch 404 and forward to error handler

@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-const categoryModel = require('../models/category.model');
+const categoryModel = require('../models/brand.model');
 const perfumeModel = require('../models/perfume.model');
 const { default: mongoose } = require('mongoose');
 

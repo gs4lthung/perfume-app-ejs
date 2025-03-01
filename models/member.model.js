@@ -1,21 +1,24 @@
 const { default: mongoose } = require("mongoose");
 
-const userSchema = new mongoose.Schema({
-    name: {
+const memberSchema = new mongoose.Schema({
+    username: {
         type: String,
         required: true
     },
-    userName: {
-        type: String,
-        required: true
-    },
-    password: {
+    name:{
         type: String,
         required: true
     },
     avatar: {
         type: String,
-        default: ''
+    },
+    isAdmin: {
+        type: Boolean,
+        default: false
+    },
+    password: {
+        type: String,
+        required: true
     },
     isDeleted: {
         type: Boolean,
@@ -25,4 +28,4 @@ const userSchema = new mongoose.Schema({
     timestamps: true
 });
 
-module.exports = mongoose.model('User', userSchema);
+module.exports = mongoose.model('Member', memberSchema);

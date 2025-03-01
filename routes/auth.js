@@ -1,11 +1,11 @@
 var express = require('express');
 var router = express.Router();
-const userModel = require('../models/user.model');
+const memberModel = require('../models/member.model');
 const bcrypt = require('bcrypt');
 const { ensureAuthenticated } = require('../middlewares/auth.middleware');
 
 router.get('/register', function (req, res, next) {
-  if (req.session.user) {
+  if (req.session.member) {
     return res.redirect('/');
   }
   res.render('register', { layout: false });
@@ -13,16 +13,16 @@ router.get('/register', function (req, res, next) {
 
 router.post('/register', async function (req, res, next) {
   try {
-    const { name, username, password } = req.body;
+    const {name, username, password } = req.body;
 
-    const user = await userModel.findOne({ userName: username });
-    if (user) {
-      throw 'User already exists';
+    const member = await memberModel.findOne({ username: username, isDeleted: false });
+    if (member) {
+      throw 'Member already exists';
     }
 
-    await userModel.create({
+    await memberModel.create({
       name: name,
-      userName: username,
+      username: username,
       password: await bcrypt.hash(password, 10)
     })
 
@@ -42,15 +42,15 @@ router.post('/login', async function (req, res, next) {
   try {
     const { username, password } = req.body;
 
-    const user = await userModel.findOne({ userName: username, isDeleted: false });
-    if (!user || !(await bcrypt.compare(password, user.password))) {
-      throw 'Invalid username or password'; 
+    const member = await memberModel.findOne({ username, isDeleted: false });
+    if (!member || !(await bcrypt.compare(password, member.password))) {
+      throw 'Invalid username or password';
     }
 
-    req.session.user = user;
+    req.session.member = member;
     res.redirect('/');
   } catch (error) {
-    req.session.error=error;
+    req.session.error = error;
     res.redirect('/login');
   }
 })
