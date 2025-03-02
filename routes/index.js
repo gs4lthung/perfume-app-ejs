@@ -16,6 +16,7 @@ router.get('/', async function (req, res, next) {
 
   const brands = await brandModel.find({ isDeleted: false });
   req.session.brands = brands
+
   res.render('index', { perfumes: pefumes, brands: brands });
 });
 

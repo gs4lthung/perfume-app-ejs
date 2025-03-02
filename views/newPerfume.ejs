@@ -4,9 +4,9 @@
 
         <form action="/perfumes" method="POST" class="d-flex flex-column gap-3">
 
-            <div class="d-flex flex-row justify-content-between">
+            <div class="d-flex flex-row justify-content-between gap-2">
                 <!-- Perfume Name -->
-                <div class="">
+                <div class="w-50">
                     <label for="name" class="form-label fw-bold">Perfume Name</label>
                     <input type="text" name="name" id="name" class="form-control" placeholder="Enter perfume name"
                         required>
@@ -31,34 +31,41 @@
                     placeholder="Describe the perfume" required></textarea>
             </div>
 
-            <div class="d-flex flex-row justify-content-between">
+            <div class="d-flex flex-row justify-content-between gap-2">
                 <!-- Price -->
-                <div class="">
+                <div class="w-50">
                     <label for="price" class="form-label fw-bold">Price ($)</label>
                     <input type="number" name="price" id="price" class="form-control" step="0.5" min="0"
                         placeholder="Enter price" required>
                 </div>
 
                 <!-- Concentration -->
-                <div class="">
+                <div class="w-50">
                     <label for="concentration" class="form-label fw-bold">Concentration</label>
-                    <input type="text" name="concentration" id="concentration" class="form-control"
-                        placeholder="Enter concentration" required>
+                    <select name="concentration" id="concentration" class="form-select" required>
+                        <option value="" disabled selected>Select Concentration</option>
+                        <% let concentrations=["EDT", "EDP" , "EDC" , "Parfum" , "Extrait" ];
+                            concentrations.forEach(concentration=> { %>
+                            <option value="<%= concentration %>">
+                                <%= concentration %>
+                            </option>
+                            <% }) %>
+                    </select>
                 </div>
             </div>
 
-            <div class="d-flex flex-row justify-content-between">
+            <div class="d-flex flex-row justify-content-between gap-2">
                 <!-- Incredients -->
-                <div class="">
+                <div class="w-50">
                     <label for="incredients" class="form-label fw-bold">Incredients</label>
                     <input type="text" name="incredients" id="incredients" class="form-control"
                         placeholder="Enter incredients" required>
                 </div>
 
                 <!-- Volume -->
-                <div class="">
+                <div class="w-50">
                     <label for="volume" class="form-label fw-bold">Volume (ml)</label>
-                    <input type="number" name="volume" id="volume" class="form-control" step="1" min="0"
+                    <input type="number" name="volume" id="volume" class="form-control" step="50" min="0"
                         placeholder="Enter volume" required>
                 </div>
             </div>
@@ -69,7 +76,8 @@
                     <label for="targetAudience" class="form-label fw-bold">Target Audience</label>
                     <select name="targetAudience" id="targetAudience" class="form-select" required>
                         <option value="" disabled selected>Select Target Audience</option>
-                        <% let targetAudiences=["Male", "Female" , "Unisex" ]; targetAudiences.forEach(targetAudience=> { %>
+                        <% let targetAudiences=["Male", "Female" , "Unisex" ]; targetAudiences.forEach(targetAudience=>
+                            { %>
                             <option value="<%= targetAudience %>">
                                 <%= targetAudience %>
                             </option>

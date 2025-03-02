@@ -15,7 +15,7 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/">Home</a>
                 </li>
-                <% if(member.isAdmin===true){ %>
+                <% if(member&&member.isAdmin===true){ %>
                     <li class="nav-item">
                         <a class="nav-link" href="/brands">Brand</a>
                     </li>

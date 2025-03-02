@@ -45,7 +45,7 @@ router.post('/change-password', async function (req, res, next) {
     }
 })
 
-router.put('/:id', adminAuthenticated, async function (req, res, next) {
+router.put('/:id', async function (req, res, next) {
     try {
         if (req.session.member._id !== req.params.id) {
             throw 'You are not allowed to edit this member';

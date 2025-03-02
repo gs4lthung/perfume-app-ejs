@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const perfumeModel = require('../models/perfume.model');
+const commentModel = require('../models/comment.model');
 const { adminAuthenticated } = require('../middlewares/auth.middleware');
 
 /* GET perfumes page. */
@@ -53,8 +54,54 @@ router.post('/', adminAuthenticated, async function (req, res, next) {
 })
 
 router.get('/:id', async function (req, res, next) {
-    const perfume = await perfumeModel.findById(req.params.id).populate('brand');
-    res.render('perfume', { perfume: perfume });
+    try {
+        const perfume = await perfumeModel.findById(req.params.id).populate('brand');
+        const comments = await perfumeModel.aggregate([
+            {
+                $match: {
+                    _id: perfume._id
+                }
+            },
+            { $unwind: '$comments' },
+            {
+                $lookup: {
+                    from: 'comments',
+                    localField: 'comments',
+                    foreignField: '_id',
+                    as: 'comments'
+                }
+            },
+            {
+                $unwind: '$comments'
+            },
+            {
+                $lookup: {
+                    from: 'members',
+                    localField: 'comments.author',
+                    foreignField: '_id',
+                    as: 'comments.author'
+                }
+            },
+            {
+                $unwind: '$comments.author'
+            },
+            {
+                $project: {
+                    _id: '$comments._id',
+                    content: '$comments.content',
+                    rating: '$comments.rating',
+                    "authorName": '$comments.author.name',
+                    "authorId": '$comments.author._id',
+                    "authorAvatar": '$comments.author.avatar',
+                }
+            }
+        ]);
+        res.render('perfume', { perfume: perfume, comments: comments });
+    } catch (error) {
+        req.session.error = error
+        res.redirect('/perfumes')
+
+    }
 });
 
 router.put('/:id', adminAuthenticated, async function (req, res, next) {

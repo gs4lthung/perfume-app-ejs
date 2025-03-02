@@ -1,73 +1,64 @@
 <div class="container my-5 d-flex flex-column gap-3">
   <div class="d-flex justify-content-between align-items-center">
     <h2 class="fw-bold text-gradient">Our Perfume Collection</h2>
-    <% if(member.isAdmin===true) {%>
-    <a href="/perfumes/new" class="btn btn-primary fw-bold">
-      <i class="fas fa-plus"></i> Create Perfume
-    </a>
-    <% } %>
+    <% if(member&&member.isAdmin===true) {%>
+      <a href="/perfumes/new" class="btn btn-primary fw-bold">
+        <i class="fas fa-plus"></i> Create Perfume
+      </a>
+      <% } %>
   </div>
 
   <!--Search bar-->
   <div>
-    <input
-      type="text"
-      name="search"
-      class="form-control"
-      id="search"
-      placeholder="Search Brand..."
-    />
+    <input type="text" name="search" class="form-control" id="search" placeholder="Search Brand..." />
   </div>
   <div>
     <% if (!perfumes || perfumes.length===0) { %>
-    <div class="alert alert-info modern-alert" role="alert">
-      No perfumes found.
-    </div>
-    <% } else { %>
-    <div class="row" id="perfumeList">
-      <% perfumes.forEach(perfume=> { %>
-      <div class="col-md-4 mb-4">
-        <div
-          class="card perfume-card shadow-sm border-0 position-relative"
-          onclick="navigateToDetail('<%= perfume._id %>')"
-        >
-          <!-- Perfume Image -->
-          <div class="image-container position-relative">
-            <img
-              src="<%= perfume.uri ? perfume.uri : 'https://via.placeholder.com/400x300' %>"
-              class="card-img-top"
-              alt="<%= perfume.name %>"
-            />
-
-            <!-- Hover Effect (Click to See Details) -->
-            <div class="overlay">
-              <p class="overlay-text">Click to see details</p>
-            </div>
-          </div>
-
-          <!-- Perfume Details -->
-          <div class="card-body">
-            <h5 class="card-title fw-bold"><%= perfume.name %></h5>
-            <p>
-              <i class="fas fa-tag"></i> <strong>Brand:</strong>
-              <span class="badge text-bg-success"
-                ><%= perfume.brand.name %></span
-              >
-            </p>
-            <p>
-              <i class="fas fa-tag"></i>
-              <strong>Target Audience:</strong>
-              <span class="badge text-bg-info"
-                ><%= perfume.targetAudience %></span
-              >
-            </p>
-          </div>
-        </div>
+      <div class="alert alert-info modern-alert" role="alert">
+        No perfumes found.
       </div>
+      <% } else { %>
+        <div class="row" id="perfumeList">
+          <% perfumes.forEach(perfume=> { %>
+            <div class="col-md-4 mb-4">
+              <div class="card perfume-card shadow-sm border-0 position-relative"
+                onclick="navigateToDetail('<%= perfume._id %>')">
+                <!-- Perfume Image -->
+                <div class="image-container position-relative">
+                  <img src="<%= perfume.uri ? perfume.uri : 'https://via.placeholder.com/400x300' %>"
+                    class="card-img-top" alt="<%= perfume.name %>" />
 
-      <% }) %>
-    </div>
-    <% } %>
+                  <!-- Hover Effect (Click to See Details) -->
+                  <div class="overlay">
+                    <p class="overlay-text">Click to see details</p>
+                  </div>
+                </div>
+
+                <!-- Perfume Details -->
+                <div class="card-body">
+                  <h5 class="card-title fw-bold">
+                    <%= perfume.name %>
+                  </h5>
+                  <p>
+                    <i class="fas fa-tag"></i> <strong>Brand:</strong>
+                    <span class="badge text-bg-success">
+                      <%= perfume.brand.name %>
+                    </span>
+                  </p>
+                  <p>
+                    <i class="fas fa-tag"></i>
+                    <strong>Target Audience:</strong>
+                    <span class="badge text-bg-info">
+                      <%= perfume.targetAudience %>
+                    </span>
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <% }) %>
+        </div>
+        <% } %>
   </div>
 </div>
 
@@ -109,20 +100,17 @@
             <div class="col-md-4 mb-4">
                 <div class="card perfume-card shadow-sm border-0">
                     <div class="image-container">
-                        <img src="${
-                          perfume.uri || "https://via.placeholder.com/400x300"
-                        }" class="card-img-top" alt="${perfume.name}">
+                        <img src="${perfume.uri || "https://via.placeholder.com/400x300"
+        }" class="card-img-top" alt="${perfume.name}">
                     </div>
                     <div class="card-body">
                         <h5 class="card-title fw-bold">${perfume.name}</h5>
-                        <p><i class="fas fa-tag"></i> <strong>Brand:</strong> <span class="badge text-bg-success">${
-                          perfume.brand
-                        }</span></p>
+                        <p><i class="fas fa-tag"></i> <strong>Brand:</strong> <span class="badge text-bg-success">${perfume.brand
+        }</span></p>
                         <p><i class="fas fa-tag"></i>
                                         <strong>Target Audience:</strong> 
-                                        <span class="badge text-bg-info">${
-                                          perfume.targetAudience
-                                        }</span>
+                                        <span class="badge text-bg-info">${perfume.targetAudience
+        }</span>
                                     </p>   
                     </div>
                 </div>
@@ -284,6 +272,7 @@
   .card-footer .btn i {
     margin-right: 5px;
   }
+
   /* Positioning for the overlay */
   .image-container {
     position: relative;
@@ -297,7 +286,8 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.6); /* Dark transparent overlay */
+    background: rgba(0, 0, 0, 0.6);
+    /* Dark transparent overlay */
     display: flex;
     align-items: center;
     justify-content: center;

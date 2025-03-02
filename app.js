@@ -47,6 +47,7 @@ app.use((req, res, next) => {
   res.locals.member = req.session.member || null;
   res.locals.perfumes = req.session.perfumes || null
   res.locals.brands = req.session.brands || null
+  res.locals.comments = req.session.comments || null
   res.locals.error = req.session.error || null;
   req.session.error = null;
   next();
@@ -59,6 +60,7 @@ app.use('/', authRouter);
 app.use('/members', ensureAuthenticated, require('./routes/members'));
 app.use('/perfumes', require('./routes/perfumes'));
 app.use('/brands', ensureAuthenticated, adminAuthenticated, require('./routes/brands'));
+app.use('/comments', ensureAuthenticated, require('./routes/comments'));
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

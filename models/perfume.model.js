@@ -15,6 +15,7 @@ const perfumeSchema = new mongoose.Schema({
     },
     concentration: {
         type: String,
+        enum: ["EDT", "EDP", "EDC", "Parfum", "Extrait"],
         required: true
     },
     description: {
@@ -39,7 +40,7 @@ const perfumeSchema = new mongoose.Schema({
         ref: 'Brand',
         required: true
     },
-    comment: [
+    comments: [
         {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Comment'
