@@ -1,42 +1,331 @@
-<section
-    class="container-fluid d-flex flex-column justify-content-center align-items-center text-black text-center bg-perfume">
-    <div class="p-5 bg-light bg-opacity-75 rounded shadow text-dark w-75">
-        <h1 class="fw-bold">Welcome to Luxe Perfume</h1>
-        <p class="lead">Experience luxury in every drop. Our exclusive collection of fine fragrances brings elegance,
-            style, and sophistication to your senses.</p>
+<div class="container my-5 d-flex flex-column gap-3">
+  <div class="d-flex justify-content-between align-items-center">
+    <h2 class="fw-bold text-gradient">Our Perfume Collection</h2>
+    <% if(member.isAdmin===true) {%>
+    <a href="/perfumes/new" class="btn btn-primary fw-bold">
+      <i class="fas fa-plus"></i> Create Perfume
+    </a>
+    <% } %>
+  </div>
 
-        <div class="row mt-4">
-            <!-- Premium Quality -->
-            <div class="col-md-4">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
-                    <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
-                  </svg>                <h4 class="fw-bold mt-2">Premium Quality</h4>
-                <p>We source the finest ingredients to create long-lasting, high-quality perfumes.</p>
-            </div>
-            <!-- Exclusive Collection -->
-            <div class="col-md-4">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
-                    class="bi bi-collection-fill" viewBox="0 0 16 16">
-                    <path
-                        d="M0 13a1.5 1.5 0 0 0 1.5 1.5h13A1.5 1.5 0 0 0 16 13V6a1.5 1.5 0 0 0-1.5-1.5h-13A1.5 1.5 0 0 0 0 6zM2 3a.5.5 0 0 0 .5.5h11a.5.5 0 0 0 0-1h-11A.5.5 0 0 0 2 3m2-2a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 0-1h-7A.5.5 0 0 0 4 1" />
-                </svg>
-                <h4 class="fw-bold mt-2">Exclusive Collection</h4>
-                <p>Discover limited edition fragrances curated for true connoisseurs.</p>
-            </div>
-            <!-- Free Shipping -->
-            <div class="col-md-4">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
-                    class="bi bi-rocket-fill" viewBox="0 0 16 16">
-                    <path
-                        d="M10.175 1.991c.81 1.312 1.583 3.43 1.778 6.819l1.5 1.83A2.5 2.5 0 0 1 14 12.202V15.5a.5.5 0 0 1-.9.3l-1.125-1.5c-.166-.222-.42-.4-.752-.57-.214-.108-.414-.192-.627-.282l-.196-.083C9.7 13.793 8.85 14 8 14s-1.7-.207-2.4-.635q-.101.044-.198.084c-.211.089-.411.173-.625.281-.332.17-.586.348-.752.57L2.9 15.8a.5.5 0 0 1-.9-.3v-3.298a2.5 2.5 0 0 1 .548-1.562l.004-.005L4.049 8.81c.197-3.323.969-5.434 1.774-6.756.466-.767.94-1.262 1.31-1.57a3.7 3.7 0 0 1 .601-.41A.55.55 0 0 1 8 0c.101 0 .17.027.25.064q.056.025.145.075c.118.066.277.167.463.315.373.297.85.779 1.317 1.537M9.5 6c0-1.105-.672-2-1.5-2s-1.5.895-1.5 2S7.172 8 8 8s1.5-.895 1.5-2" />
-                    <path
-                        d="M8 14.5c.5 0 .999-.046 1.479-.139L8.4 15.8a.5.5 0 0 1-.8 0l-1.079-1.439c.48.093.98.139 1.479.139" />
-                </svg>
-                <h4 class="fw-bold mt-2">Free Shipping</h4>
-                <p>Enjoy free worldwide shipping on all orders over $100.</p>
-            </div>
-        </div>
-
-        <a href="/perfumes" class="btn btn-success btn-lg mt-4">View Now</a>
+  <!--Search bar-->
+  <div>
+    <input
+      type="text"
+      name="search"
+      class="form-control"
+      id="search"
+      placeholder="Search Brand..."
+    />
+  </div>
+  <div>
+    <% if (!perfumes || perfumes.length===0) { %>
+    <div class="alert alert-info modern-alert" role="alert">
+      No perfumes found.
     </div>
-</section>
+    <% } else { %>
+    <div class="row" id="perfumeList">
+      <% perfumes.forEach(perfume=> { %>
+      <div class="col-md-4 mb-4">
+        <div
+          class="card perfume-card shadow-sm border-0 position-relative"
+          onclick="navigateToDetail('<%= perfume._id %>')"
+        >
+          <!-- Perfume Image -->
+          <div class="image-container position-relative">
+            <img
+              src="<%= perfume.uri ? perfume.uri : 'https://via.placeholder.com/400x300' %>"
+              class="card-img-top"
+              alt="<%= perfume.name %>"
+            />
+
+            <!-- Hover Effect (Click to See Details) -->
+            <div class="overlay">
+              <p class="overlay-text">Click to see details</p>
+            </div>
+          </div>
+
+          <!-- Perfume Details -->
+          <div class="card-body">
+            <h5 class="card-title fw-bold"><%= perfume.name %></h5>
+            <p>
+              <i class="fas fa-tag"></i> <strong>Brand:</strong>
+              <span class="badge text-bg-success"
+                ><%= perfume.brand.name %></span
+              >
+            </p>
+            <p>
+              <i class="fas fa-tag"></i>
+              <strong>Target Audience:</strong>
+              <span class="badge text-bg-info"
+                ><%= perfume.targetAudience %></span
+              >
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <% }) %>
+    </div>
+    <% } %>
+  </div>
+</div>
+
+<script>
+  let debounceTimer;
+
+  document.getElementById("search").addEventListener("input", () => {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => {
+      let query = document.getElementById("search").value;
+      console.log(query);
+
+      fetch(`/perfumes/search?query=${encodeURIComponent(query)}`)
+        .then((response) => response.json())
+        .then((data) => {
+          updatePerfumeList(data);
+        })
+        .catch((error) => console.error("Error fetching perfumes:", error));
+    }, 500);
+  });
+
+  function updatePerfumeList(perfumes) {
+    let perfumeList = document.getElementById("perfumeList");
+
+    if (!perfumeList) {
+      console.error("Error: #perfumeList element not found.");
+      return;
+    }
+
+    perfumeList.innerHTML = ""; // Clear previous results
+
+    if (perfumes.length === 0) {
+      perfumeList.innerHTML = '<p class="text-muted">No perfumes found.</p>';
+      return;
+    }
+
+    perfumes.forEach((perfume) => {
+      let perfumeCard = `
+            <div class="col-md-4 mb-4">
+                <div class="card perfume-card shadow-sm border-0">
+                    <div class="image-container">
+                        <img src="${
+                          perfume.uri || "https://via.placeholder.com/400x300"
+                        }" class="card-img-top" alt="${perfume.name}">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold">${perfume.name}</h5>
+                        <p><i class="fas fa-tag"></i> <strong>Brand:</strong> <span class="badge text-bg-success">${
+                          perfume.brand
+                        }</span></p>
+                        <p><i class="fas fa-tag"></i>
+                                        <strong>Target Audience:</strong> 
+                                        <span class="badge text-bg-info">${
+                                          perfume.targetAudience
+                                        }</span>
+                                    </p>   
+                    </div>
+                </div>
+            </div>`;
+      perfumeList.innerHTML += perfumeCard;
+    });
+  }
+  function navigateToDetail(perfumeId) {
+    window.location.href = `/perfumes/${perfumeId}`;
+  }
+</script>
+
+<style>
+  /* General Styles */
+  body {
+    font-family: "Poppins", sans-serif;
+    background: #f0f2f5;
+  }
+
+  .text-gradient {
+    background: linear-gradient(45deg, #6a11cb, #2575fc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* Perfume Card */
+  .perfume-card {
+    border-radius: 15px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    padding-bottom: 10px;
+  }
+
+  .perfume-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Image Styling */
+  .image-container {
+    height: 250px;
+    overflow: hidden;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+  }
+
+  .perfume-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease-in-out;
+  }
+
+  .perfume-card:hover img {
+    transform: scale(1.05);
+  }
+
+  /* Description */
+  .description {
+    font-size: 0.9rem;
+    color: #555;
+  }
+
+  /* Info Section */
+  .info-section p {
+    margin: 5px 0;
+    font-size: 0.95rem;
+  }
+
+  .info-section i {
+    color: #6a11cb;
+    margin-right: 8px;
+  }
+
+  /* Price Tag */
+  .price-tag {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #27ae60;
+    text-align: center;
+  }
+
+  /* Category Badge */
+  .modern-badge {
+    background: linear-gradient(45deg, #ff416c, #ff4b2b);
+    color: white;
+    font-size: 0.85rem;
+    padding: 6px 12px;
+    border-radius: 30px;
+    font-weight: bold;
+  }
+
+  /* Buttons */
+  .modern-btn {
+    background: linear-gradient(45deg, #ff416c, #ff4b2b);
+    border: none;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .modern-btn:hover {
+    background: linear-gradient(45deg, #ff4b2b, #ff416c);
+    transform: scale(1.05);
+  }
+
+  .modern-edit {
+    background: linear-gradient(45deg, #6a11cb, #2575fc);
+    color: white;
+    font-weight: bold;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .modern-edit:hover {
+    background: linear-gradient(45deg, #2575fc, #6a11cb);
+    transform: scale(1.05);
+  }
+
+  .modern-delete {
+    background: linear-gradient(45deg, #e53935, #e35d5b);
+    color: white;
+    font-weight: bold;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .modern-delete:hover {
+    background: linear-gradient(45deg, #e35d5b, #e53935);
+    transform: scale(1.05);
+  }
+
+  /* Alert Box */
+  .modern-alert {
+    background: rgba(0, 123, 255, 0.1);
+    color: #0056b3;
+    border-left: 5px solid #007bff;
+    border-radius: 8px;
+  }
+
+  /* Footer Buttons */
+  .card-footer {
+    background: transparent;
+    border-top: none;
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .card-footer .btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    border-radius: 30px;
+  }
+
+  .card-footer .btn i {
+    margin-right: 5px;
+  }
+  /* Positioning for the overlay */
+  .image-container {
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* The overlay that appears on hover */
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6); /* Dark transparent overlay */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+  }
+
+  /* Text inside the overlay */
+  .overlay-text {
+    color: white;
+    font-weight: bold;
+    font-size: 1.2rem;
+    text-align: center;
+  }
+
+  /* Show overlay on hover */
+  .image-container:hover .overlay {
+    opacity: 1;
+  }
+
+  /* Ensure the whole card is clickable */
+  .perfume-card {
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+  }
+
+  /* Slight lift effect on hover */
+  .perfume-card:hover {
+    transform: scale(1.05);
+  }
+</style>

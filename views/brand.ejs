@@ -1,0 +1,57 @@
+<div class="container my-5">
+    <h2 class="fw-bold text-center text-gradient">Manage Brands</h2>
+
+    <!-- Add New Brand Form -->
+    <div class="card shadow-sm p-4 mb-4">
+        <form action="/brands" method="POST" class="d-flex gap-3">
+            <input type="text" name="name" class="form-control" placeholder="Enter new brand name" required>
+            <button type="submit" class="btn btn-primary">Create</button>
+        </form>
+        <% if(error) { %>
+            <p class="text-danger text-center">
+                <%= error %>
+            </p>
+            <% } %>
+    </div>
+
+    <!-- Brands Table -->
+    <div class="card shadow-sm p-4">
+        <table class="table table-striped text-center">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Brand Name</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <% brands.forEach((brand, index)=> { %>
+                    <tr>
+                        <td>
+                            <%= index + 1 %>
+                        </td>
+
+                        <!-- Editable Brand Name -->
+                        <td>
+                            <form action="/brands/<%= brand._id %>?_method=PUT" method="POST"
+                                class="d-flex gap-2 justify-content-center">
+                                <input type="hidden" name="_method" value="PUT">
+                                <input type="text" name="name" class="form-control text-center"
+                                    value="<%= brand.name %>" required>
+                                <button type="submit" class="btn btn-warning">Edit</button>
+                            </form>
+                        </td>
+
+                        <!-- Delete Button -->
+                        <td>
+                            <form action="/brands/<%= brand._id %>?_method=DELETE" method="POST"
+                                onclick="return confirm('Are your sure to delete this brand?')" class="delete-form">
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    <% }); %>
+            </tbody>
+        </table>
+    </div>
+</div>

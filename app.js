@@ -11,7 +11,7 @@ const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const expressEjsLayouts = require('express-ejs-layouts');
 const methodOverride = require('method-override');
-const { ensureAuthenticated } = require('./middlewares/auth.middleware');
+const { ensureAuthenticated, adminAuthenticated } = require('./middlewares/auth.middleware');
 
 var app = express();
 
@@ -46,7 +46,7 @@ app.use(session({
 app.use((req, res, next) => {
   res.locals.member = req.session.member || null;
   res.locals.perfumes = req.session.perfumes || null
-  res.locals.categories = req.session.categories || null
+  res.locals.brands = req.session.brands || null
   res.locals.error = req.session.error || null;
   req.session.error = null;
   next();
@@ -56,8 +56,9 @@ app.use(methodOverride('_method'));
 
 app.use('/', indexRouter);
 app.use('/', authRouter);
-app.use('/members',ensureAuthenticated, require('./routes/members'));
+app.use('/members', ensureAuthenticated, require('./routes/members'));
 app.use('/perfumes', require('./routes/perfumes'));
+app.use('/brands', ensureAuthenticated, adminAuthenticated, require('./routes/brands'));
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

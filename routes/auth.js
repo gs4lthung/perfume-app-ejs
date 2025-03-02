@@ -26,7 +26,6 @@ router.post('/register', async function (req, res, next) {
       password: await bcrypt.hash(password, 10)
     })
 
-
     res.redirect('/login');
   } catch (error) {
     req.session.error = error;
@@ -48,7 +47,7 @@ router.post('/login', async function (req, res, next) {
     }
 
     req.session.member = member;
-    res.redirect('/');
+    res.redirect(301, '/');
   } catch (error) {
     req.session.error = error;
     res.redirect('/login');

@@ -1,0 +1,203 @@
+<!-- Perfume Edit Form -->
+<form action="/perfumes/<%= perfume._id %>?_method=PUT" method="POST">
+    <div class="container my-5">
+        <div class="card shadow-lg p-4 border-0">
+            <div class="row">
+                <!-- Perfume Image -->
+                <div class="col-md-6">
+                    <img src="<%= perfume.uri ? perfume.uri : 'https://via.placeholder.com/400x300' %>" id="perfumeImg"
+                        class="img-fluid rounded shadow-lg perfume-img w-100" alt="<%= perfume.name %>" />
+                    <% if(member.isAdmin===true) { %>
+                        <input type="text" name="uri" id="uri" class="form-control mt-3" value="<%= perfume.uri %>"
+                            required disabled onchange="previewImage(this.value)" />
+                        <% } %>
+                </div>
+
+                <!-- Perfume Details -->
+                <div class="col-md-6">
+                    <p class="text-muted">
+                        <% if(member.isAdmin===true) { %>
+                            Name:
+                            <input type="text" name="name" id="name" class="form-control" value="<%= perfume.name %>"
+                                required disabled />
+                            <% } else { %>
+                                <h2 class="fw-bold text-gradient">
+                                    <%= perfume.name %>
+                                </h2>
+                                <% } %>
+                    </p>
+
+                    <p class="text-muted">
+                        Brand:
+                        <% if(member.isAdmin===true){ %>
+                            <select name="brand" id="brand" class="form-select" required disabled>
+                                <% brands.forEach(brand=> { %>
+                                    <option value="<%= brand._id %>" <%
+                                        if(brand._id.toString()===perfume.brand._id.toString()) { %> selected <% } %>>
+                                            <%= brand.name %>
+                                    </option>
+                                    <% }) %>
+                            </select>
+                            <% } else { %>
+                                <strong>
+                                    <%= perfume.brand.name %>
+                                </strong>
+                                <% } %>
+                    </p>
+
+                    <p class="text-muted">
+                        Price:
+                        <% if(member.isAdmin===true) { %>
+                            <input type="number" name="price" id="price" class="form-control" step="0.5" min="0"
+                                value="<%= perfume.price %>" required disabled />
+                            <% } else { %>
+                                <strong>$<%= perfume.price %></strong>
+                                <% } %>
+                    </p>
+
+                    <p class="text-muted">
+                        Concentration:
+                        <% if(member.isAdmin===true) { %>
+                            <input type="text" name="concentration" id="concentration" class="form-control"
+                                value="<%= perfume.concentration %>" required disabled />
+                            <% } else { %>
+                                <strong>
+                                    <%= perfume.concentration %>
+                                </strong>
+                                <% } %>
+                    </p>
+
+                    <p class="text-muted">
+                        Ingredients:
+                        <% if(member.isAdmin===true) { %>
+                            <input type="text" name="incredients" id="incredients" class="form-control"
+                                value="<%= perfume.incredients %>" required disabled />
+                            <% } else { %>
+                                <strong>
+                                    <%= perfume.incredients %>
+                                </strong>
+                                <% } %>
+                    </p>
+
+                    <p class="text-muted">
+                        Volume:
+                        <% if(member.isAdmin===true) { %>
+                            <input type="number" name="volume" id="volume" class="form-control" step="1" min="0"
+                                value="<%= perfume.volume %>" required disabled />
+                            <% } else { %>
+                                <strong>
+                                    <%= perfume.volume %>ml
+                                </strong>
+                                <% } %>
+                    </p>
+
+                    <p class="text-muted">
+                        Target Audience:
+                        <% let targetAudience=["Male","Female","Unisex"]; if(member.isAdmin===true) { %>
+                            <select name="targetAudience" id="targetAudience" class="form-select" required disabled>
+                                <% targetAudience.forEach(audience=> { %>
+                                    <option value="<%= audience %>" <% if(audience===perfume.targetAudience) { %>
+                                        selected <% } %>>
+                                            <%= audience %>
+                                    </option>
+                                    <% }) %>
+                            </select>
+                            <% } else { %>
+                                <span class="badge text-bg-info">
+                                    <%= perfume.targetAudience %>
+                                </span>
+                                <% } %>
+                    </p>
+
+                    <p class="description">
+                        <% if(member.isAdmin===true) { %>
+                            Description:
+                            <textarea name="description" id="description" class="form-control" rows="3" required
+                                disabled><%= perfume.description %></textarea>
+                            <% } else { %>
+                                <%= perfume.description %>
+                                    <% } %>
+                    </p>
+
+                    <p class="text-danger">
+                        <%= error %>
+                    </p>
+
+                    <div class="d-flex flex-row gap-3">
+                        <% if(member.isAdmin===true) { %>
+                            <button type="button" id="editBtn" class="btn btn-primary">Edit</button>
+                            <button type="submit" id="saveBtn" class="btn btn-success d-none">Save</button>
+                            <% } %>
+                                <a href="/" class="btn btn-secondary">
+                                    <i class="fas fa-arrow-left"></i> Back to Collection
+                                </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<!-- Separate Form for Delete -->
+<% if(member.isAdmin===true) { %>
+    <form action="/perfumes/<%= perfume._id %>?_method=DELETE" method="POST"
+        style="position: absolute; top: 100px; right: 15px;">
+        <button class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this perfume?');">
+            Delete</button>
+    </form>
+    <% } %>
+
+        <!-- JavaScript to Enable Editing -->
+        <script>
+            document.getElementById("editBtn").addEventListener("click", function () {
+                let inputs = document.querySelectorAll(".form-control");
+                let selects = document.querySelectorAll(".form-select");
+                let editBtn = document.getElementById("editBtn");
+                let saveBtn = document.getElementById("saveBtn");
+
+                inputs.forEach(input => input.removeAttribute("disabled")); // Enable inputs
+                selects.forEach(select => select.removeAttribute("disabled")); // Enable selects
+                editBtn.classList.add("d-none"); // Hide "Edit" button
+                saveBtn.classList.remove("d-none"); // Show "Save" button
+            });
+
+            function previewImage(url) {
+                document.getElementById('perfumeImg').src = url;
+            }
+        </script>
+
+        <!-- CSS Styling -->
+        <style>
+            .perfume-img {
+                width: 100%;
+                height: auto;
+                object-fit: cover;
+                transition: transform 0.3s ease-in-out;
+            }
+
+            .perfume-img:hover {
+                transform: scale(1.05);
+            }
+
+            .description {
+                font-size: 1rem;
+                color: #444;
+                line-height: 1.5;
+            }
+
+            .text-gradient {
+                background: linear-gradient(45deg, #6a11cb, #2575fc);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+
+            .btn-secondary {
+                background: #6c757d;
+                transition: all 0.3s ease-in-out;
+            }
+
+            .btn-secondary:hover {
+                background: #5a6268;
+                transform: scale(1.05);
+            }
+        </style>

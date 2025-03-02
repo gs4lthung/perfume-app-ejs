@@ -11,14 +11,14 @@
                     <input type="text" name="name" id="name" class="form-control" placeholder="Enter perfume name"
                         required>
                 </div>
-                <!-- Category Selection -->
+                <!-- Brand Selection -->
                 <div class="w-50">
-                    <label for="category" class="form-label fw-bold">Category</label>
-                    <select name="category" id="category" class="form-select" required>
-                        <option value="" disabled selected>Select Category</option>
-                        <% categories.forEach(category=> { %>
-                            <option value="<%= category._id %>">
-                                <%= category.name %>
+                    <label for="brand" class="form-label fw-bold">Brand</label>
+                    <select name="brand" id="brand" class="form-select" required>
+                        <option value="" disabled selected>Select Brand</option>
+                        <% brands.forEach(brand=> { %>
+                            <option value="<%= brand._id %>">
+                                <%= brand.name %>
                             </option>
                             <% }) %>
                     </select>
@@ -39,33 +39,50 @@
                         placeholder="Enter price" required>
                 </div>
 
-                <!-- Brand -->
+                <!-- Concentration -->
                 <div class="">
-                    <label for="brand" class="form-label fw-bold">Brand</label>
-                    <input type="text" name="brand" id="brand" class="form-control" placeholder="Enter brand" required>
+                    <label for="concentration" class="form-label fw-bold">Concentration</label>
+                    <input type="text" name="concentration" id="concentration" class="form-control"
+                        placeholder="Enter concentration" required>
                 </div>
             </div>
 
             <div class="d-flex flex-row justify-content-between">
-                <!-- Fragrance Type -->
-                <div class="m">
-                    <label for="fragranceType" class="form-label fw-bold">Fragrance Type</label>
-                    <input type="text" name="fragranceType" id="fragranceType" class="form-control"
-                        placeholder="Enter fragrance type" required>
+                <!-- Incredients -->
+                <div class="">
+                    <label for="incredients" class="form-label fw-bold">Incredients</label>
+                    <input type="text" name="incredients" id="incredients" class="form-control"
+                        placeholder="Enter incredients" required>
                 </div>
 
                 <!-- Volume -->
                 <div class="">
-                    <label for="volume" class="form-label fw-bold">Volume</label>
-                    <input type="number" name="volume" id="volume" class="form-control" step="1" min="0" placeholder="Enter volume"
-                        required>
+                    <label for="volume" class="form-label fw-bold">Volume (ml)</label>
+                    <input type="number" name="volume" id="volume" class="form-control" step="1" min="0"
+                        placeholder="Enter volume" required>
                 </div>
             </div>
 
+            <div class="d-flex flex-row justify-content-between">
+                <!-- Target Audience -->
+                <div class="w-100">
+                    <label for="targetAudience" class="form-label fw-bold">Target Audience</label>
+                    <select name="targetAudience" id="targetAudience" class="form-select" required>
+                        <option value="" disabled selected>Select Target Audience</option>
+                        <% let targetAudiences=["Male", "Female" , "Unisex" ]; targetAudiences.forEach(targetAudience=> { %>
+                            <option value="<%= targetAudience %>">
+                                <%= targetAudience %>
+                            </option>
+                            <% }) %>
+                    </select>
+                </div>
+            </div>
+
+
             <!-- Image Upload -->
             <div class="">
-                <label for="imageUrl" class="form-label fw-bold">Perfume Image</label>
-                <input type="text" name="imageUrl" id="imageUrl" class="form-control" placeholder="Enter image url"
+                <label for="uri" class="form-label fw-bold">Perfume Image</label>
+                <input type="text" name="uri" id="uri" class="form-control" placeholder="Enter image url"
                     onchange="previewImage(this.value)">
             </div>
 

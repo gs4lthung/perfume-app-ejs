@@ -36,9 +36,19 @@ const perfumeSchema = new mongoose.Schema({
     },
     brand: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Brands',
+        ref: 'Brand',
         required: true
-    }
+    },
+    comment: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Comment'
+        }
+    ],
+    isDeleted: {
+        type: Boolean,
+        default: false
+    },
 
 }, { timestamps: true });
 

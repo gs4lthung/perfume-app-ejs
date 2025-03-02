@@ -15,22 +15,28 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/">Home</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/perfumes">Pefumes</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/about">About</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/contact">Contact</a>
-                </li>
+                <% if(member.isAdmin===true){ %>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/brands">Brand</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/collectors">Collector</a>
+                    </li>
+                    <% } %>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/about">About</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/contact">Contact</a>
+                        </li>
             </ul>
         </div>
         <div class="d-flex flex-row gap-2">
             <% if (member) { %>
                 <a href="/members" class="btn btn-light d-flex align-items-center">
                     <img src="<%= member.avatar ? member.avatar : 'https://static.vecteezy.com/system/resources/thumbnails/020/765/399/small_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg' %>"
-                        alt="Member Avatar" class="rounded-circle shadow" style="width: 25px; height: 25px; object-fit: cover;">
+                        alt="Member Avatar" class="rounded-circle shadow"
+                        style="width: 25px; height: 25px; object-fit: cover;">
                 </a>
                 <a href="/logout" class="btn btn-danger d-flex align-items-center"><svg
                         xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
